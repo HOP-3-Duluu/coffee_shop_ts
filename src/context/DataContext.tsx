@@ -1,28 +1,25 @@
 import React, {createContext, Dispatch, SetStateAction, useState} from 'react';
 
 export type ContextType = {
-  options: Object[];
-  setOptions: Dispatch<SetStateAction<Object[]>>;
-  click: boolean;
-  setClick: React.Dispatch<React.SetStateAction<boolean>>;
-  idBag: Number[];
-  setIdBag: React.Dispatch<React.SetStateAction<Number[]>>;
+  options: {size: string; milk: string};
+  setOptions: Dispatch<SetStateAction<{size: string; milk: string}>>;
 };
 
 interface Props {
   children: any;
 }
 
-export const DataContext = createContext<ContextType | null>({} as ContextType);
+export const DataContext = createContext<ContextType | any>({} as ContextType);
 
 export const DataContextProvider = ({children}: Props) => {
-  const [options, setOptions] = useState<Array<>>([])
-  const [click, setClick] = useState<boolean>(false);
-  const [idBag, setIdBag] = useState<Number[]>([]);
-  
+  const [options, setOptions] = useState({
+    size: 1,
+    milk: 'Standart',
+  });
+
   return (
     <DataContext.Provider
-      value={{options, setOptions, click, setClick, idBag, setIdBag}}>
+      value={{options, setOptions}}>
       {children}
     </DataContext.Provider>
   );

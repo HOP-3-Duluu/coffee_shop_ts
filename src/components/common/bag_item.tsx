@@ -1,11 +1,8 @@
-import { split } from 'lodash';
-import React, {useContext} from 'react';
+import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {X_icon} from '../../assets/icon/x';
-import {DataContext} from '../../context/DataContext';
 
 export const Bag_item = ({el}: any) => {
-  const data = useContext(DataContext);
 
   return (
     <View style={{flexDirection: 'column'}}>
@@ -22,11 +19,9 @@ export const Bag_item = ({el}: any) => {
             justifyContent: 'space-between',
           }}>
           <Text style={styled.bigText}>{el.title}</Text>
-          <Text style={styled.text}>${el.price} / spluce</Text>
+          <Text style={styled.text}>${el.price} / spruce</Text>
         </View>
-        <Pressable 
-        // onPress={() => data?.setIdBag()}
-        >
+        <Pressable >
           <X_icon />
         </Pressable>
       </View>

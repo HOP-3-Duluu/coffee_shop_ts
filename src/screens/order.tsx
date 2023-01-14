@@ -57,11 +57,21 @@ export const OrderScreen = () => {
           })}
         </ScrollView>
       </View>
-      <ScrollView>
-        <Order_item status="processing"/>
-        <Order_item status="success"/>
-        <Order_item status="cancelled"/>
-      </ScrollView>
+      {number === 0 && (
+        <ScrollView>
+          <Order_item status="processing" />
+        </ScrollView>
+      )}
+      {number === 1 && (
+        <ScrollView>
+          <Order_item status="success" />
+        </ScrollView>
+      )}
+      {number === 2 && (
+        <ScrollView>
+          <Order_item status="cancelled" />
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -99,6 +109,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     marginTop: 17,
     borderBottomColor: '0px 3px 4px rgba(0, 0, 0, 0.05)',
-    marginBottom: 24
+    marginBottom: 24,
   },
 });

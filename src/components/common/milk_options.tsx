@@ -4,14 +4,12 @@ import {X_icon} from '../../assets/icon/x';
 import {DataContext} from '../../context/DataContext';
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
-const Option = ({title, standart}: any) => {
-  const data = useContext(DataContext);
+const Option = ({title, standart, setIsVisible}: {title: string; standart: boolean, setIsVisible: any}) => {
+  const {setOptions, options} = useContext(DataContext);
+
   return (
-    <Pressable 
-    // onPress={() => data?.setMilkOption(title)}
-    >
+    <Pressable onPress={() => setOptions({...options, milk : title}, setIsVisible(false))}>
       <View style={{flexDirection: 'column'}}>
         <View
           style={{
@@ -51,15 +49,30 @@ const Option = ({title, standart}: any) => {
   );
 };
 
-export const Milk_options = () => {
+export const Milk_options = ({isVisible, setIsVisible}: boolean) => {
   const title = [
-    ['2% Milk', true],
-    ['Almond', false],
-    ['Breve (Half & Half)', false],
-    ['Coconut', false],
-    ['Heavy Cream', false],
-  ];
-  const data = useContext(DataContext);
+    {
+      name : "2% Milk",
+      boolean: true
+    },
+    {
+      name : "Almond",
+      boolean: false
+    },
+    {
+      name : "Breve (Half & Half)",
+      boolean: false
+    },
+    {
+      name : "Coconut",
+      boolean: false
+    },
+    {
+      name : "Heavy Cream",
+      boolean: false
+    },
+  ]
+
   return (
     <View
       style={{
@@ -67,7 +80,7 @@ export const Milk_options = () => {
         height: 500,
         flexDirection: 'column',
         marginBottom: 20,
-        zIndex: 1
+        display: isVisible ? "flex" : "none"
       }}>
       <View
         style={{
@@ -77,7 +90,7 @@ export const Milk_options = () => {
           alignItems: 'center',
         }}>
         <Text style={styled.little_header}>Milk</Text>
-        <Pressable onPress={() => data?.setClick(false)}>
+        <Pressable onPress={() => setIsVisible(false)}>
           <X_icon style={{marginTop: 20}} />
         </Pressable>
       </View>
@@ -93,7 +106,7 @@ export const Milk_options = () => {
         }}
       />
       {title.map((el, index) => {
-        return <Option key={index} title={el[0]} standart={el[1]} />;
+        return <Option key={index} title={el.name} standart={el.boolean} setIsVisible={setIsVisible}/>;
       })}
     </View>
   );

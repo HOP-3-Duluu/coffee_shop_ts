@@ -11,4 +11,11 @@ shopRt.get('/data', async (req, res) => {
   });
 });
 
+shopRt.get('/data/:id' , async (req , res) => {
+    const specData = await Shops.findOne({id: req.params['id']}); 
+    res.send({
+       spec: specData,
+    })
+})
+
 module.exports = shopRt;

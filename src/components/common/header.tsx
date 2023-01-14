@@ -1,17 +1,25 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Image,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import {Bag_icon} from '../../assets/icon/bag';
-import {DataContext} from '../../context/DataContext';
+import { DataContext } from '../../context/DataContext';
+import API from '../../utils/api';
 
 export const Header = ({navigation}: {navigation: any}) => {
-  const data = useContext(DataContext);
+  const [totalItems, setTotalItems] = useState<any>()
+  const {options} = useContext(DataContext);
+
+  useEffect(() => {
+    API.get("shop/bag").then(res => {
+      setTotalItems(res.data.bagDatas.totalItems)
+    })
+  }, [options, options?.milk, options?.size])
+
   return (
     <View
       style={{
@@ -32,7 +40,7 @@ export const Header = ({navigation}: {navigation: any}) => {
         <View
           style={{
             position: 'absolute',
-            zIndex: data?.idBag.length === 0 ? 1 : 0,
+            zIndex: totalItems === 0 ? 1 : 0,
           }}>
           <Bag_icon />
         </View>
@@ -41,31 +49,32 @@ export const Header = ({navigation}: {navigation: any}) => {
             styled.badge,
             {
               backgroundColor:
-                data?.idBag.length === 0 ? 'transparent' : '#D3A762',
-              borderColor: data?.idBag.length === 0 ? 'transparent' : '#ffffff',
+                totalItems === 0 ? 'transparent' : '#D3A762',
+              borderColor: totalItems === 0 ? 'transparent' : '#ffffff',
             },
           ]}>
           <Text
             style={{
-              color: data?.idBag.length === 0 ? 'transparent' : '#ffffff',
+              color: totalItems === 0 ? 'transparent' : '#ffffff',
               fontWeight: '600',
             }}>
-            {data?.idBag.length}
+            {totalItems}
           </Text>
         </View>
       </Pressable>
     </View>
   );
 };
+
 const styled = StyleSheet.create({
   badge: {
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
     width: 20,
     height: 20,
     borderRadius: 50,
     borderWidth: 2,
-    position: 'relative',
     bottom: 8,
     right: 10,
   },

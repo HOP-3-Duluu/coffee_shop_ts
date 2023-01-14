@@ -3,16 +3,16 @@ import {Dimensions, Pressable, StyleSheet, Text, View} from 'react-native';
 import {Bottom_arrow} from '../../assets/icon/bottom_arrow';
 import {DataContext} from '../../context/DataContext';
 
-export const Detail_options = (navigation: any) => {
-  const data = useContext(DataContext);
+export const Detail_options = ({navigation ,setIsVisible}: any) => {
+  const {options, setClick} = useContext(DataContext);
   const windowWidth = Dimensions.get('window').width;
 
   return (
     <View style={{flexDirection: 'column'}}>
       <Text style={styled.little_header}>Milk</Text>
       <View style={styled.button}>
-        {/* <Text style={styled.option_text}>{data?.milkOption}</Text> */}
-        <Pressable onPress={() => data?.setClick(true)}>
+        <Text style={styled.option_text}>{options.milk}</Text>
+        <Pressable onPress={() => setIsVisible(true)}>
           <Bottom_arrow style={{marginRight: 16}} />
         </Pressable>
       </View>

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   Dimensions,
@@ -19,10 +19,12 @@ import {White_left_arrow} from '../assets/icon/white_left_arrow';
 import {Detail_options} from '../components/common/detail_options';
 import {Milk_options} from '../components/common/milk_options';
 import {DataContext} from '../context/DataContext';
+import API from '../utils/api';
 
 export const Detail = ({navigation, route}: any) => {
   const windowWidth = Dimensions.get('window').width;
-  const [number, setNumber] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [spec, setSpec] = useState<any | null>(null);
   const sections = [
     ['Small', <Size8 style={{marginTop: 12}} />],
     ['Sprunce', <Size12 />],
@@ -30,9 +32,27 @@ export const Detail = ({navigation, route}: any) => {
     ['Redwood', <Size20 />],
     ['Giant', <Size24 />],
   ];
-  const data = useContext(DataContext);
-  const {image} = route.params;
-  const {id}: {id: number} = route.params;
+  const {options, setOptions} = useContext(DataContext);
+  const {image, id} = route.params;
+  const [totalItems, setTotalItems] = useState<any>();
+
+  useEffect(() => {
+    API.get(`data/${id}`).then(res => {
+      setSpec(res.data.spec);
+    });
+    API.get('shop/bag').then(res => {
+      setTotalItems(res.data.bagDatas.totalItems);
+    });
+  }, [id]);
+
+  const addBag = async () => {
+    await API.put('shop/bag/coffees', {
+      ...spec,
+      size: sections[options.size][0],
+      milk: options.milk,
+      status: "processing"
+    });
+  };
 
   return (
     <ScrollView style={{flexDirection: 'column'}}>
@@ -40,7 +60,7 @@ export const Detail = ({navigation, route}: any) => {
         style={{
           width: windowWidth,
           height: 344,
-          opacity: data?.click === true ? 0.5 : 1,
+          opacity: isVisible === true ? 0.5 : 1,
         }}
         source={{uri: image}}>
         <SafeAreaView>
@@ -63,17 +83,16 @@ export const Detail = ({navigation, route}: any) => {
                   styled.badge,
                   {
                     backgroundColor:
-                      data?.idBag.length === 0 ? 'transparent' : '#D3A762',
-                    borderColor:
-                      data?.idBag.length === 0 ? 'transparent' : '#ffffff',
+                      totalItems === 0 ? 'transparent' : '#D3A762',
+                    borderColor: totalItems === 0 ? 'transparent' : '#ffffff',
                   },
                 ]}>
                 <Text
                   style={{
-                    color: data?.idBag.length === 0 ? 'transparent' : '#ffffff',
+                    color: totalItems === 0 ? 'transparent' : '#ffffff',
                     fontWeight: '600',
                   }}>
-                  {data?.idBag.length}
+                  {totalItems}
                 </Text>
               </View>
               <White_Bag style={{position: 'absolute'}} />
@@ -81,8 +100,7 @@ export const Detail = ({navigation, route}: any) => {
           </View>
         </SafeAreaView>
       </ImageBackground>
-      {data?.click && <Milk_options />}
-      <View style={{display: data?.click === true && 'none'}}>
+      <View style={{display: isVisible ? 'none' : 'flex'}}>
         <View
           style={{
             marginLeft: 16,
@@ -114,9 +132,9 @@ export const Detail = ({navigation, route}: any) => {
                   key={index}
                   style={{flexDirection: 'column', alignItems: 'center'}}>
                   <Pressable
-                    onPress={() => setNumber(index)}
+                    onPress={() => setOptions({...options, size: index})}
                     style={
-                      number === index
+                      options.size === index
                         ? styled.cover_button
                         : styled.normal_button
                     }>
@@ -124,7 +142,7 @@ export const Detail = ({navigation, route}: any) => {
                   </Pressable>
                   <Text
                     style={
-                      number === index
+                      options.size === index
                         ? styled.cover_button.text
                         : styled.normal_button.text
                     }>
@@ -145,7 +163,7 @@ export const Detail = ({navigation, route}: any) => {
               marginBottom: 20,
             }}
           />
-          <Detail_options />
+          <Detail_options setIsVisible={setIsVisible} />
           <Text style={styled.little_header}>Flavor changes</Text>
           <View
             style={{
@@ -170,11 +188,14 @@ export const Detail = ({navigation, route}: any) => {
           <Pressable
             onPressOut={() => navigation.navigate('Home')}
             style={styled.add_bag}
-            onPress={() => data?.setIdBag([id, ...data.idBag])}>
+            onPress={() => {
+              addBag(), setOptions({...options, milk: 'Standart', size: 1});
+            }}>
             <Text style={styled.add_bag.text}>Add To Bag</Text>
           </Pressable>
         </View>
       </View>
+      <Milk_options setIsVisible={setIsVisible} isVisible={isVisible} />
     </ScrollView>
   );
 };
