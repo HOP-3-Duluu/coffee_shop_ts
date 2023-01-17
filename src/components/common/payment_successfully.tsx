@@ -5,16 +5,6 @@ import API from '../../utils/api';
 export const Payment_successfully = () => {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
-  const [coffee_data, setCoffee_data] = useState<any>();
-
-  useEffect(() => {
-    API.get('shop/bag').then(res => {
-      setCoffee_data(res.data.bagDatas.coffees);
-    });
-    API.put('shop/order/success', {
-      ...coffee_data,
-    });
-  }, []);
 
   return (
     <View style={[styles.screen, {width: windowWidth, height: windowHeight}]}>

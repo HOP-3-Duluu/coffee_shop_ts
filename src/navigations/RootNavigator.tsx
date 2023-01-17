@@ -8,6 +8,7 @@ import {Home_icon} from '../assets/icon/home';
 import {Scan_icon} from '../assets/icon/scan';
 import {Order_icon} from '../assets/icon/order';
 import {Profile_icon} from '../assets/icon/profle';
+import { Notification } from '../components/notification/test_notification';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,6 +51,14 @@ export const BottomTabNavigation = ({navigation}: {navigation: any}) => {
             tabBarIcon: () => <Profile_icon />,
           }}
         />
+        {/* <Tab.Screen
+          name="Notification"
+          component={Notification}
+          options={{
+            headerShown: false,
+            tabBarIcon: () => <Profile_icon />,
+          }}
+        /> */}
       </Tab.Navigator>
   );
 };

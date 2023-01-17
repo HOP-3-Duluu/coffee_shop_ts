@@ -20,6 +20,7 @@ import {Detail_options} from '../components/common/detail_options';
 import {Milk_options} from '../components/common/milk_options';
 import {DataContext} from '../context/DataContext';
 import API from '../utils/api';
+import uuid from 'react-native-uuid';
 
 export const Detail = ({navigation, route}: any) => {
   const windowWidth = Dimensions.get('window').width;
@@ -50,7 +51,7 @@ export const Detail = ({navigation, route}: any) => {
       ...spec,
       size: sections[options.size][0],
       milk: options.milk,
-      status: "processing"
+      uuid: uuid.v4().slice(0 , 7)
     });
   };
 

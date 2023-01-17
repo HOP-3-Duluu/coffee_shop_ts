@@ -8,7 +8,9 @@ const CoffeSchema = new Schema({
     type: {type: String, required: true},
     description: {type: String, required: false},
     id: {type: Number, required: false},
-    ingredients: {type: Array, required: false}
+    specId: {type: String , required: true}, 
+    ingredients: {type: Array, required: false},
+    status: {type: String, required: true, default: 'processing'}
 }); 
 
 const Shops = model('Shops' ,CoffeSchema); 

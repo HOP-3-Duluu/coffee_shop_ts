@@ -18,7 +18,7 @@ export const Header = ({navigation}: {navigation: any}) => {
     API.get("shop/bag").then(res => {
       setTotalItems(res.data.bagDatas.totalItems)
     })
-  }, [options, options?.milk, options?.size])
+  }, [options])
 
   return (
     <View

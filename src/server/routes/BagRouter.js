@@ -16,4 +16,9 @@ bagRt.put('/shop/bag/coffees' , async(req , res) => {
     }).catch(err => console.log(err)); 
 })
 
+// bagRt.put("/shop/bag/delete/:id", async(req, res) => {
+//     await bags.findByIdAndUpdate({_id: '63bfd775c846dccd9e43fdd0'}, {$pull: {coffees: {uuid: req.params['id']}}}); 
+// })
+
+
 module.exports = bagRt; 

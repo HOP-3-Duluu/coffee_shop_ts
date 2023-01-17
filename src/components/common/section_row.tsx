@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -7,13 +7,15 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import axios from 'axios';
+import API from '../../utils/api';
 
 export const Sections_row = ({navigation: {navigate}}: {navigation: any}) => {
   const [coffee_data, setCoffee_data] = useState<any>([]);
-  axios.get('http://localhost:3030/data').then(response => {
-    setCoffee_data(response.data.data);
-  });
+  useEffect(() => {
+    API.get("data").then(res => {
+      setCoffee_data(res.data.data)
+    })
+  }, [])
   return (
     <View style={{marginLeft: 16}}>
       <ScrollView horizontal={true}>

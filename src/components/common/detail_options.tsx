@@ -4,7 +4,7 @@ import {Bottom_arrow} from '../../assets/icon/bottom_arrow';
 import {DataContext} from '../../context/DataContext';
 
 export const Detail_options = ({navigation ,setIsVisible}: any) => {
-  const {options, setClick} = useContext(DataContext);
+  const {options} = useContext(DataContext);
   const windowWidth = Dimensions.get('window').width;
 
   return (

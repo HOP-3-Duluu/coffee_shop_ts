@@ -1,9 +1,12 @@
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {X_icon} from '../../assets/icon/x';
+import API from '../../utils/api';
 
 export const Bag_item = ({el}: any) => {
-
+  // const DeleteDoc = async () => {
+  //   API.put(`shop/bag/delete/${el.uuid}`)
+  // }
   return (
     <View style={{flexDirection: 'column'}}>
       <View style={{marginTop: 20, marginBottom: 20, flexDirection: 'row'}}>
